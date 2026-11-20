@@ -1,0 +1,72 @@
+[source]
+owner = "ollama"
+repo = "ollama"
+state = "all"
+
+[ingest]
+per_page = 100
+max_pages = 0
+request_timeout = 30
+retry_attempts = 5
+retry_backoff = 2.0
+page_sleep = 0.0
+keep_pull_requests = false
+body_max_chars = 20000
+max_items_per_window = 10000
+
+[prepare]
+min_chars = 20
+max_chars = 4000
+drop_authors = ["dependabot[bot]", "github-actions[bot]", "renovate[bot]"]
+drop_label_prefixes = ["duplicate", "spam"]
+near_duplicate_threshold = 0.85
+max_near_duplicate_share = 0.15
+dedup_head_chars = 600
+dedup_analyzer = "char_wb"
+dedup_ngram_min = 4
+dedup_ngram_max = 6
+dedup_max_features = 300000
+title_weight = 1
+template_sections = ["os", "gpu", "cpu", "ollama version", "relevant log output"]
+log_line_markers = ["level=", "msg=", "time=", "goroutine", "llama_model_loader", "llama_new_context", "llm_load", "ggml_", "print_info:", "load_tensors:", "[gin]", "tid=", "timestamp="]
+
+[embed]
+max_features = 40000
+min_df = 3
+max_df = 0.35
+ngram_max = 2
+svd_components = 160
+random_state = 42
+
+[cluster]
+n_clusters = 25
+n_init = 10
+random_state = 42
+top_terms = 8
+
+[score]
+weight_volume = 0.30
+weight_breadth = 0.25
+weight_unresolved = 0.20
+weight_engagement = 0.15
+weight_recency = 0.10
+recent_days = 180
+min_theme_size = 25
+min_cohesion_z = -2.0
+
+[report]
+roadmap_themes = 12
+evidence_per_theme = 5
+
+[paths]
+data_dir = "data"
+issues_file = "data/raw/issues.jsonl"
+state_file = "data/raw/ingest_state.json"
+prepared_file = "data/prepared/issues.jsonl"
+vectors_file = "data/prepared/vectors.npz"
+terms_file = "data/prepared/terms.json"
+clusters_file = "data/themes/clusters.json"
+themes_file = "data/themes/themes.json"
+quality_file = "data/themes/quality.json"
+roadmap_file = "data/report/roadmap.md"
+dashboard_file = "data/report/dashboard.html"
